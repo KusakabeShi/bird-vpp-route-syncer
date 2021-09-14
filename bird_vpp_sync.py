@@ -34,7 +34,7 @@ def connect_vpp(jsonfiles):
     return vpp
 
 def bird_get_table(table):
-    birdret = subprocess.run(["birdc","show","route","table",table,"primary","all"], timeout=3,capture_output=True)
+    birdret = subprocess.run(["birdc","show","route","table",table,"primary","all"], timeout=3,capture_output=True,check=True)
     aaa = birdret.stdout.decode("utf8")
     route_list = re.split('\\n(?!\\t)', aaa)
     route_parsed = {}

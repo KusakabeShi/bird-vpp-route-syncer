@@ -35,8 +35,8 @@ def connect_vpp(jsonfiles):
 
 def bird_get_table(table):
     birdret = subprocess.run(["birdc","show","route","table",table,"primary","all"], timeout=3,capture_output=True,check=True)
-    aaa = birdret.stdout.decode("utf8")
-    route_list = re.split('\\n(?!\\t)', aaa)
+    birdstdout = birdret.stdout.decode("utf8")
+    route_list = re.split('\\n(?!\\t)', birdstdout)
     route_parsed = {}
     for index,item in enumerate(route_list):
         if "AS" not in item:
@@ -55,6 +55,8 @@ def bird_get_table(table):
                 print(detail)
         prefix = ipaddress. ip_address(route_attr["BGP.next_hop"][0])
         route_parsed[nexthop] = prefix
+    if len(route_parsed) == 0:
+        raise Exception("Empty route table in BIRD")
     return route_parsed
 
 def ip_route_add_del(vpp,sw_if_index,is_add,prefix,nexthop):

@@ -56,7 +56,8 @@ def bird_get_table(table):
         prefix = ipaddress. ip_address(route_attr["BGP.next_hop"][0])
         route_parsed[nexthop] = prefix
     if len(route_parsed) == 0:
-        raise Exception("Empty route table in BIRD")
+        print("Empty route table in BIRD")
+        sys.exit(1)
     return route_parsed
 
 def ip_route_add_del(vpp,sw_if_index,is_add,prefix,nexthop):
